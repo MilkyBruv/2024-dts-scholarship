@@ -1,3 +1,3 @@
 default:
-	g++ src/*.cpp -o jocoa
+	g++ src/**/*.cpp -o jocoa
 	./jocoa
