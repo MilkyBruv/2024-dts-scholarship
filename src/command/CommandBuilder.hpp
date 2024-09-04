@@ -9,7 +9,9 @@ using std::string;
 class CommandBuilder
 {
 public:
+    // Build and return `javac` command from supplied JSON data.
     static string buildJavacCommand(JsonData jsonData);
+    // Build and return `java` command from supplied JSON data.
     static string buildJavaCommand(JsonData jsonData);
 };
 

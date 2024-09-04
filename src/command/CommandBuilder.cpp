@@ -14,21 +14,29 @@ Java Commands:
 
 string CommandBuilder::buildJavacCommand(JsonData jsonData)
 {
+    // Begin command creation
     string finalCommand = "javac -d " + jsonData.classpath + " -cp .";
 
+    // Add dependencies and source files to command
     for (const auto &dependency : jsonData.dependencies) { finalCommand += OS_DELIMETER + dependency; }
     for (const auto &sourceFile : jsonData.sourceFiles) { finalCommand += " " + sourceFile; }
 
+    // Return command
     return finalCommand;
 }
 
 string CommandBuilder::buildJavaCommand(JsonData jsonData)
 {
+    // Begin command creation
     string finalCommand = "java -cp .";
     finalCommand += OS_DELIMETER + jsonData.classpath;
 
+    // Add dependencies to command
     for (const auto &dependency : jsonData.dependencies) { finalCommand += OS_DELIMETER + dependency; }
     
+    // Add natives directory to command
     finalCommand += "-Djava.library.path=" + jsonData.natives + " main/Main";
+
+    // Return command
     return finalCommand;
 }
