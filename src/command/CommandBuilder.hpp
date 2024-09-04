@@ -13,6 +13,8 @@ public:
     static string buildJavacCommand(JsonData jsonData);
     // Build and return `java` command from supplied JSON data.
     static string buildJavaCommand(JsonData jsonData);
+    // Build and return `java` jar command from supplied JSON data.
+    static string buildJavaJarCommand(JsonData jsonData);
 };
 
 

@@ -3,7 +3,7 @@
 
 /*
 Commands:
- - exec (compile to class and run)
+ - exec (compile to class and run) --jar, --class (default)
  - package (to jar)
  - build (package and run jar)
  - new (create new project)

@@ -40,3 +40,12 @@ string CommandBuilder::buildJavaCommand(JsonData jsonData)
     // Return command
     return finalCommand;
 }
+
+string CommandBuilder::buildJavaJarCommand(JsonData jsonData)
+{
+    // Create command
+    string finalCommand = "java -jar build/" + jsonData.projectName + ".jar";
+
+    // Return command
+    return finalCommand;
+}
