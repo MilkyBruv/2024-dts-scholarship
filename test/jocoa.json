@@ -1,0 +1,14 @@
+{
+    "projectName": "MyProject",
+    "projectType": "Library | Program",
+    "sourceFiles": 
+    [
+        "src/file1.java | %AUTO%"
+    ],
+    "dependencies":
+    [
+        "lib/dependency1.jar | %AUTO%"
+    ],
+    "natives": "lib/natives | %AUTO%",
+    "classpath": "bin | %AUTO%"
+}

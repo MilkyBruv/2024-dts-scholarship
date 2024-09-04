@@ -2,9 +2,12 @@
 #define JSONREADER_HPP
 
 #include <string>
+#include <vector>
 #include "../../lib/include/json.hpp"
 
 using std::string;
+using std::vector;
+using json = nlohmann::json;
 
 /*
 Java Commands:
@@ -14,23 +17,20 @@ Java Commands:
 
 typedef struct JsonData
 {
-    string javaDirectoryArgument; // Classfiles directory
-    string* javaClasspathArguments; // Libraries
-    string* javaJavaFiles; // Path to all java files
-    
-    string javacClasspathArguments; // Classfiles and libraries
-    string javacDirectoryArguments; // Natives directory
-    string javacMainClass; // Directory and .class file to main class
+    string projectName;
+    string projectType;
+    vector<string> sourceFiles;
+    vector<string> dependencies;
+    string natives;
+    string classpath;
 } JsonData;
 
 class JSONReader
 {
-private:
-    // 
 public:
-    JSONReader();
-    ~JSONReader();
     static JsonData getJsonData();
+    static string getStringValue(string key, json jsonData);
+    static vector<string> getVectorValue(string key, json jsonData);
 };
 
 

@@ -1,8 +1,9 @@
 #include "Commands.hpp"
+#include "../json/JSONReader.hpp"
 
 void Commands::exec(char const *argv[])
 {
-    // 
+    JsonData jsonData = JSONReader::getJsonData();
 }
 
 void Commands::package(char const *argv[])
