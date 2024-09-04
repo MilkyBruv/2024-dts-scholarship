@@ -6,9 +6,9 @@ Java Commands:
  - java -cp .;<classfiles>;1.jar;2.jar -Djava.library.path=<dll dir> main/Main
 */
 
-#ifdef _WIN32 || __WINDOWS__
+#if defined(_WIN32) || defined(__WINDOWS__)
     #define OS_DELIMITER ";"
-#elif __unix__ || __linux__
+#elif defined(__unix__) || defined(__linux__)
     #define OS_DELIMETER ":"
 #endif
 
@@ -30,4 +30,5 @@ string CommandBuilder::buildJavaCommand(JsonData jsonData)
     for (const auto &dependency : jsonData.dependencies) { finalCommand += OS_DELIMETER + dependency; }
     
     finalCommand += "-Djava.library.path=" + jsonData.natives + " main/Main";
+    return finalCommand;
 }

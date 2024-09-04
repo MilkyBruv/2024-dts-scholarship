@@ -1,0 +1,85 @@
+kai@kais-laptop:~/Code/Jocoa$ make
+g++ src/**/*.cpp -o jocoa
+src/command/CommandBuilder.cpp:9:15: warning: extra tokens at end of #ifdef directive
+    9 | #ifdef _WIN32 || __WINDOWS__
+      |               ^~
+src/command/CommandBuilder.cpp: In static member function ‘static std::string CommandBuilder::buildJavaCommand(JsonData)’:
+src/command/CommandBuilder.cpp:33:1: warning: no return statement in function returning non-void [-Wreturn-type]
+   33 | }
+      | ^
+./jocoa
+Test
+
+FROM 
+
+#ifdef _WIN32 || __WINDOWS__
+    #define OS_DELIMITER ";"
+#elif __unix__ || __linux__
+    #define OS_DELIMETER ":"
+#endif
+
+FIXED
+
+kai@kais-laptop:~/Code/Jocoa$ make
+g++ src/**/*.cpp -o jocoa
+src/command/CommandBuilder.cpp: In static member function ‘static std::string CommandBuilder::buildJavaCommand(JsonData)’:
+src/command/CommandBuilder.cpp:33:1: warning: no return statement in function returning non-void [-Wreturn-type]
+   33 | }
+      | ^
+./jocoa
+Test
+
+WITH
+
+#if defined(_WIN32) || defined(__WINDOWS__)
+    #define OS_DELIMITER ";"
+#elif defined(__unix__) || defined(__linux__)
+    #define OS_DELIMETER ":"
+#endif
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+kai@kais-laptop:~/Code/Jocoa$ make
+g++ src/**/*.cpp -o jocoa
+src/command/CommandBuilder.cpp: In static member function ‘static std::string CommandBuilder::buildJavaCommand(JsonData)’:
+src/command/CommandBuilder.cpp:33:1: warning: no return statement in function returning non-void [-Wreturn-type]
+   33 | }
+      | ^
+./jocoa
+Test
+
+FROM
+
+string CommandBuilder::buildJavaCommand(JsonData jsonData)
+{
+    string finalCommand = "java -cp .";
+    finalCommand += OS_DELIMETER + jsonData.classpath;
+
+    for (const auto &dependency : jsonData.dependencies) { finalCommand += OS_DELIMETER + dependency; }
+    
+    finalCommand += "-Djava.library.path=" + jsonData.natives + " main/Main";
+}
+
+FIXED
+
+kai@kais-laptop:~/Code/Jocoa$ make
+g++ src/**/*.cpp -o jocoa
+./jocoa
+Test
+
+WITH
+
+string CommandBuilder::buildJavaCommand(JsonData jsonData)
+{
+    string finalCommand = "java -cp .";
+    finalCommand += OS_DELIMETER + jsonData.classpath;
+
+    for (const auto &dependency : jsonData.dependencies) { finalCommand += OS_DELIMETER + dependency; }
+    
+    finalCommand += "-Djava.library.path=" + jsonData.natives + " main/Main";
+    return finalCommand;
+}
