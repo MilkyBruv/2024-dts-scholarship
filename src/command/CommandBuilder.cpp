@@ -6,6 +6,7 @@ Java Commands:
  - java -cp .;<classfiles>;1.jar;2.jar -Djava.library.path=<dll dir> main/Main
 */
 
+// Set classpath delimeter for OS
 #if defined(_WIN32) || defined(__WINDOWS__)
     #define OS_DELIMITER ";"
 #elif defined(__unix__) || defined(__linux__)

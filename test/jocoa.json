@@ -3,12 +3,12 @@
     "projectType": "Library | Program",
     "sourceFiles": 
     [
-        "src/file1.java | %AUTO%"
+        "src/file1.java"
     ],
     "dependencies":
     [
-        "lib/dependency1.jar | %AUTO%"
+        "lib/dependency1.jar"
     ],
-    "natives": "lib/natives | %AUTO%",
-    "classpath": "bin | %AUTO%"
+    "natives": "lib/natives",
+    "classpath": "bin"
 }

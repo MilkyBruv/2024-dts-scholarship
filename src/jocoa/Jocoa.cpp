@@ -1,6 +1,6 @@
+#include <string.h>
 #include "../jocoa/Jocoa.hpp"
 #include "../command/Commands.hpp"
-#include <string.h>
 
 void Jocoa::runCommandFromArguments(char const *argv[])
 {

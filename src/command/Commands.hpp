@@ -1,6 +1,12 @@
 #ifndef COMMANDS_HPP
 #define COMMANDS_HPP
 
+#if defined(_WIN32) || defined(__WINDOWS__)
+    #define OS_PATH_DELIMETER "\\"
+#elif defined(__unix__) || defined(__linux__)
+    #define OS_PATH_DELIMETER "/"
+#endif
+
 /*
 Commands:
  - run --jar
@@ -21,6 +27,8 @@ Java Commands:
 
 class Commands
 {
+private:
+    static void createDirectory(string path);
 public:
     static void run(char const *argv[]);
     static void toJar(char const *argv[]);
