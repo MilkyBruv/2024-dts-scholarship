@@ -83,3 +83,37 @@ string CommandBuilder::buildJavaCommand(JsonData jsonData)
     finalCommand += "-Djava.library.path=" + jsonData.natives + " main/Main";
     return finalCommand;
 }
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+kai@kais-laptop:~/Code/Jocoa$ make
+g++ src/**/*.cpp -o jocoa
+In file included from src/jocoa/Jocoa.cpp:3:
+src/jocoa/../command/Commands.hpp:31:33: error: ‘string’ has not been declared
+   31 |     static void createDirectory(string path);
+      |                                 ^~~~~~
+make: *** [Makefile:2: default] Error 1
+
+FROM
+
+class Commands
+{
+private:
+    static void createDirectory(string path);
+
+FIXED
+
+kai@kais-laptop:~/Code/Jocoa$ make
+g++ src/**/*.cpp -o jocoa
+./jocoa
+Test
+
+WITH
+
+#include <string>
+
+using std::string;

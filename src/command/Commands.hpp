@@ -1,6 +1,10 @@
 #ifndef COMMANDS_HPP
 #define COMMANDS_HPP
 
+#include <string>
+
+using std::string;
+
 #if defined(_WIN32) || defined(__WINDOWS__)
     #define OS_PATH_DELIMETER "\\"
 #elif defined(__unix__) || defined(__linux__)

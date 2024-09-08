@@ -51,6 +51,7 @@ void Commands::_new(char const *argv[])
     // Get new project path
     string currentPath = std::filesystem::current_path().u8string() + OS_PATH_DELIMETER + projectName;
 
+    // Create project directories
     createDirectory(currentPath);
     createDirectory(currentPath + OS_PATH_DELIMETER + "src" + OS_PATH_DELIMETER + "main");
     createDirectory(currentPath + OS_PATH_DELIMETER + "lib" + OS_PATH_DELIMETER + "natives");
