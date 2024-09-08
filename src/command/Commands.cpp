@@ -57,9 +57,13 @@ void Commands::_new(char const *argv[])
     createDirectory(currentPath + OS_PATH_DELIMETER + "lib" + OS_PATH_DELIMETER + "natives");
     createDirectory(currentPath + OS_PATH_DELIMETER + "bin");
 
+    cout << "Created directories!" << endl;
+
     // Create JSON file and write basic setup
     std::ofstream jsonFile(currentPath + OS_PATH_DELIMETER + "jocoa.json");
     jsonFile << "{\n\"projectName\": \"MyProject\",\n\"projectType\": \"Library | Program\",\n\"sourceFiles\": \n\n\n\"src/file1.java\"\n],\n\"dependencies\":\n\n\n\"lib/dependency1.jar\"\n],\n\n\"natives\": \"lib/natives\",\n\"classpath\": \"bin\"\n}";
+
+    cout << "Created JSON file!" << endl;
 }
 
 void Commands::cleanUp(char const *argv[])

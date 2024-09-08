@@ -117,3 +117,148 @@ WITH
 #include <string>
 
 using std::string;
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+kai@kais-laptop:~/Code/Jocoa$ make linux
+g++ src/**/*.cpp -o jocoa
+sudo mv jocoa /usr/local/bin
+[sudo] password for kai: 
+kai@kais-laptop:~/Code/Jocoa$ cd test
+kai@kais-laptop:~/Code/Jocoa/test$ ls
+bin  build  jocoa.json  lib  res  src
+kai@kais-laptop:~/Code/Jocoa/test$ cd ..
+kai@kais-laptop:~/Code/Jocoa$ mkdir example
+kai@kais-laptop:~/Code/Jocoa$ cd example/
+kai@kais-laptop:~/Code/Jocoa/example$ jocoa new TestProject
+kai@kais-laptop:~/Code/Jocoa/example$ ls
+
+FROM
+
+void Jocoa::runCommandFromArguments(char const *argv[])
+{
+    if (strcmp(argv[2], "run") == 0)
+    {
+        Commands::run(argv);
+    }
+    else if (strcmp(argv[2], "to-jar") == 0)
+    {
+        Commands::toJar(argv);
+    }
+    else if (strcmp(argv[2], "new") == 0)
+    {
+        Commands::_new(argv);
+    }
+    else if (strcmp(argv[2], "clean-up") == 0)
+    {
+        Commands::cleanUp(argv);
+    }
+    else if (strcmp(argv[2], "add-library") == 0)
+    {
+        Commands::addLibrary(argv);
+    }
+    else if (strcmp(argv[2], "remove-library") == 0)
+    {
+        Commands::removeLibrary(argv);
+    }
+    else if (strcmp(argv[2], "search-library") == 0)
+    {
+        Commands::searchLibrary(argv);
+    }
+}
+
+TESTED
+
+void Commands::_new(char const *argv[])
+{
+    // Get name from arguments
+    string projectName = argv[2];
+    // Get new project path
+    string currentPath = std::filesystem::current_path().u8string() + OS_PATH_DELIMETER + projectName;
+
+    // Create project directories
+    createDirectory(currentPath);
+    createDirectory(currentPath + OS_PATH_DELIMETER + "src" + OS_PATH_DELIMETER + "main");
+    createDirectory(currentPath + OS_PATH_DELIMETER + "lib" + OS_PATH_DELIMETER + "natives");
+    createDirectory(currentPath + OS_PATH_DELIMETER + "bin");
+
+    cout << "Created directories!" << endl;
+
+    // Create JSON file and write basic setup
+    std::ofstream jsonFile(currentPath + OS_PATH_DELIMETER + "jocoa.json");
+    jsonFile << "{\n\"projectName\": \"MyProject\",\n\"projectType\": \"Library | Program\",\n\"sourceFiles\": \n\n\n\"src/file1.java\"\n],\n\"dependencies\":\n\n\n\"lib/dependency1.jar\"\n],\n\n\"natives\": \"lib/natives\",\n\"classpath\": \"bin\"\n}";
+
+    cout << "Created JSON file!" << endl;
+}
+
+RETURNED
+
+kai@kais-laptop:~/Code/Jocoa/example$ jocoa new TestProject
+
+FIXED
+
+No output
+
+WITH
+
+void Jocoa::runCommandFromArguments(char const *argv[])
+{
+    if (strcmp(argv[1], "run") == 0)
+    {
+        Commands::run(argv);
+    }
+    else if (strcmp(argv[1], "to-jar") == 0)
+    {
+        Commands::toJar(argv);
+    }
+    else if (strcmp(argv[1], "new") == 0)
+    {
+        Commands::_new(argv);
+    }
+    else if (strcmp(argv[1], "clean-up") == 0)
+    {
+        Commands::cleanUp(argv);
+    }
+    else if (strcmp(argv[1], "add-library") == 0)
+    {
+        Commands::addLibrary(argv);
+    }
+    else if (strcmp(argv[1], "remove-library") == 0)
+    {
+        Commands::removeLibrary(argv);
+    }
+    else if (strcmp(argv[1], "search-library") == 0)
+    {
+        Commands::searchLibrary(argv);
+    }
+}
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+kai@kais-laptop:~/Code/Jocoa/example$ jocoa new TestProject
+Created '/home/kai/Code/Jocoa/example/TestProject'
+terminate called after throwing an instance of 'std::filesystem::__cxx11::filesystem_error'
+  what():  filesystem error: cannot create directory: No such file or directory [/home/kai/Code/Jocoa/example/TestProject/src/main]
+Aborted (core dumped)
+kai@kais-laptop:~/Code/Jocoa/example$ ls
+TestProject
+
+FROM
+
+???
+
+FIXED
+
+???
+
+WITH
+
+???

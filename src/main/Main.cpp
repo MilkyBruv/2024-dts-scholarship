@@ -1,7 +1,8 @@
 #include <iostream>
+#include "../jocoa/Jocoa.hpp"
 
 int main(int argc, char const *argv[])
 {
-    std::cout << "Test" << std::endl;
+    Jocoa::runCommandFromArguments(argv);
     return 0;
 }
