@@ -3,16 +3,14 @@
 
 /*
 Commands:
- - exec (compile to class and run) --jar, --class (default)
- - package (to jar)
- - build (package and run jar)
+ - run --jar
+ - to-jar
  - new (create new project)
- - clean (clean any unused libraries and files)
+ - clean-up (clean any unused libraries and files)
  - help (shows list of commands)
- - lib
-    - add (add package from maven repo)
-    - search (search package from maven repo)
- - search (search files and folders for .java and .jar files and add them to)
+ - add-library <name> <name> ... (add packages from maven repo)
+ - remove-library <name> <name> ... (remove packages from local project)
+ - search-library <name> (search packages from maven repo)
 */
 
 /*
@@ -23,18 +21,15 @@ Java Commands:
 
 class Commands
 {
-private:
-    // 
 public:
-    static void exec(char const *argv[]);
-    static void package(char const *argv[]);
-    static void build(char const *argv[]);
+    static void run(char const *argv[]);
+    static void toJar(char const *argv[]);
     static void _new(char const *argv[]);
-    static void clean(char const *argv[]);
+    static void cleanUp(char const *argv[]);
     static void help(char const *argv[]);
-    static void libAdd(char const *argv[]);
-    static void libSearch(char const *argv[]);
-    static void search(char const *argv[]);
+    static void addLibrary(char const *argv[]);
+    static void removeLibrary(char const *argv[]);
+    static void searchLibrary(char const *argv[]);
 };
 
 

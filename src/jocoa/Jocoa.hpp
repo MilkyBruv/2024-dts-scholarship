@@ -3,11 +3,9 @@
 
 class Jocoa
 {
-private:
-    // 
 public:
-    Jocoa();
-    ~Jocoa();
+    // Match the argument to the correspending command.
+    static void runCommandFromArguments(char const *argv[]);
 };
 
 #endif

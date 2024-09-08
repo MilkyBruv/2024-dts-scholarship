@@ -49,3 +49,12 @@ string CommandBuilder::buildJavaJarCommand(JsonData jsonData)
     // Return command
     return finalCommand;
 }
+
+string CommandBuilder::buildJarCommand(JsonData jsonData)
+{
+    // Create command
+    string finalCommand = "jar cvf " + jsonData.projectName + " -C " + jsonData.classpath;
+
+    // Return command
+    return finalCommand;
+}
