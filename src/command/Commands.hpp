@@ -33,6 +33,7 @@ class Commands
 {
 private:
     static void createDirectory(string path);
+    static void createAndWriteFile(string path, string content);
 public:
     static void run(char const *argv[]);
     static void toJar(char const *argv[]);

@@ -20,6 +20,14 @@ void Commands::createDirectory(string path)
     }
 }
 
+void Commands::createAndWriteFile(string path, string content)
+{
+    // Create file and write file with supplied contents
+    std::ofstream file(path);
+    file << "{\n\t\"projectName\": \"MyProject\",\n\t\"projectType\": \"Library | Program\",\n\t\"sourceFiles\": \n\t[\n\t\t\"src/file1.java\"\n\t],\n\t\"dependencies\":\n\t[\n\t\t\"lib/dependency1.jar\"\n\t],\n\t\"natives\": \"lib/natives\",\n\t\"classpath\": \"bin\"\n}";
+    file.close();
+}
+
 void Commands::run(char const *argv[])
 {
     // Get JSON data
@@ -27,12 +35,12 @@ void Commands::run(char const *argv[])
 
     if (strcmp(argv[2], "jar") == 0)
     {
-        // Build and run commands from JSON data for the .jar file.
+        // Build and run commands from JSON data for the .jar file
         system(CommandBuilder::buildJavaJarCommand(jsonData).c_str());
         return;
     }
 
-    // Build and run commands from JSON data for the .class files.
+    // Build and run commands from JSON data for the .class files
     cout << "Compiling..." << endl;
     system(CommandBuilder::buildJavacCommand(jsonData).c_str());
     cout << "Done!" << endl;
@@ -53,17 +61,15 @@ void Commands::_new(char const *argv[])
 
     // Create project directories
     createDirectory(currentPath);
+    createDirectory(currentPath + OS_PATH_DELIMETER + "src");
     createDirectory(currentPath + OS_PATH_DELIMETER + "src" + OS_PATH_DELIMETER + "main");
+    createDirectory(currentPath + OS_PATH_DELIMETER + "lib");
     createDirectory(currentPath + OS_PATH_DELIMETER + "lib" + OS_PATH_DELIMETER + "natives");
     createDirectory(currentPath + OS_PATH_DELIMETER + "bin");
 
-    cout << "Created directories!" << endl;
-
     // Create JSON file and write basic setup
-    std::ofstream jsonFile(currentPath + OS_PATH_DELIMETER + "jocoa.json");
-    jsonFile << "{\n\"projectName\": \"MyProject\",\n\"projectType\": \"Library | Program\",\n\"sourceFiles\": \n\n\n\"src/file1.java\"\n],\n\"dependencies\":\n\n\n\"lib/dependency1.jar\"\n],\n\n\"natives\": \"lib/natives\",\n\"classpath\": \"bin\"\n}";
-
-    cout << "Created JSON file!" << endl;
+    createAndWriteFile(currentPath + OS_PATH_DELIMETER + "jocoa.json", 
+        "{\n\t\"projectName\": \"MyProject\",\n\t\"projectType\": \"Library | Program\",\n\t\"sourceFiles\": \n\t[\n\t\t\"src/file1.java\"\n\t],\n\t\"dependencies\":\n\t[\n\t\t\"lib/dependency1.jar\"\n\t],\n\t\"natives\": \"lib/natives\",\n\t\"classpath\": \"bin\"\n}");
 }
 
 void Commands::cleanUp(char const *argv[])

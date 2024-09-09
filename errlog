@@ -253,12 +253,130 @@ TestProject
 
 FROM
 
-???
+void Commands::_new(char const *argv[])
+{
+    // Get name from arguments
+    string projectName = argv[2];
+    // Get new project path
+    string currentPath = std::filesystem::current_path().u8string() + OS_PATH_DELIMETER + projectName;
+
+    // Create project directories
+    createDirectory(currentPath);
+    createDirectory(currentPath + OS_PATH_DELIMETER + "src" + OS_PATH_DELIMETER + "main");
+    createDirectory(currentPath + OS_PATH_DELIMETER + "lib" + OS_PATH_DELIMETER + "natives");
+    createDirectory(currentPath + OS_PATH_DELIMETER + "bin");
+
+    cout << "Created directories!" << endl;
+
+    // Create JSON file and write basic setup
+    std::ofstream jsonFile(currentPath + OS_PATH_DELIMETER + "jocoa.json");
+    jsonFile << "{\n\"projectName\": \"MyProject\",\n\"projectType\": \"Library | Program\",\n\"sourceFiles\": \n\n\n\"src/file1.java\"\n],\n\"dependencies\":\n\n\n\"lib/dependency1.jar\"\n],\n\n\"natives\": \"lib/natives\",\n\"classpath\": \"bin\"\n}";
+    jsonFile.close();
+
+    cout << "Created JSON file!" << endl;
+}
 
 FIXED
 
-???
+kai@kais-laptop:~/Code/Jocoa/example$ jocoa new Test
+Created '/home/kai/Code/Jocoa/example/Test'
+Created '/home/kai/Code/Jocoa/example/Test/src'
+Created '/home/kai/Code/Jocoa/example/Test/src/main'
+Created '/home/kai/Code/Jocoa/example/Test/lib'
+Created '/home/kai/Code/Jocoa/example/Test/lib/natives'
+Created '/home/kai/Code/Jocoa/example/Test/bin'
+Created directories!
+Created JSON file!
+kai@kais-laptop:~/Code/Jocoa/example$ ls
+Test
+kai@kais-laptop:~/Code/Jocoa/example$ tree
+.
+└── Test
+    ├── bin
+    ├── jocoa.json
+    ├── lib
+    │   └── natives
+    └── src
+        └── main
 
 WITH
 
-???
+void Commands::_new(char const *argv[])
+{
+    // Get name from arguments
+    string projectName = argv[2];
+    // Get new project path
+    string currentPath = std::filesystem::current_path().u8string() + OS_PATH_DELIMETER + projectName;
+
+    // Create project directories
+    createDirectory(currentPath);
+    createDirectory(currentPath + OS_PATH_DELIMETER + "src");
+    createDirectory(currentPath + OS_PATH_DELIMETER + "src" + OS_PATH_DELIMETER + "main");
+    createDirectory(currentPath + OS_PATH_DELIMETER + "lib");
+    createDirectory(currentPath + OS_PATH_DELIMETER + "lib" + OS_PATH_DELIMETER + "natives");
+    createDirectory(currentPath + OS_PATH_DELIMETER + "bin");
+
+    cout << "Created directories!" << endl;
+
+    // Create JSON file and write basic setup
+    std::ofstream jsonFile(currentPath + OS_PATH_DELIMETER + "jocoa.json");
+    jsonFile << "{\n\"projectName\": \"MyProject\",\n\"projectType\": \"Library | Program\",\n\"sourceFiles\": \n\n\n\"src/file1.java\"\n],\n\"dependencies\":\n\n\n\"lib/dependency1.jar\"\n],\n\n\"natives\": \"lib/natives\",\n\"classpath\": \"bin\"\n}";
+    jsonFile.close();
+
+    cout << "Created JSON file!" << endl;
+}
+
+
+
+.
+
+
+
+{
+"projectName": "MyProject",
+"projectType": "Library | Program",
+"sourceFiles": 
+
+
+"src/file1.java"
+],
+"dependencies":
+
+
+"lib/dependency1.jar"
+],
+
+"natives": "lib/natives",
+"classpath": "bin"
+}
+
+FROM
+
+// Create JSON file and write basic setup
+std::ofstream jsonFile(currentPath + OS_PATH_DELIMETER + "jocoa.json");
+jsonFile << ""
+jsonFile.close();
+
+FIXED
+
+{
+	"projectName": "MyProject",
+	"projectType": "Library | Program",
+	"sourceFiles": 
+	[
+		"src/file1.java"
+	],
+	"dependencies":
+	[
+		"lib/dependency1.jar"
+	],
+	"natives": "lib/natives",
+	"classpath": "bin"
+}
+
+WITH
+
+// Create JSON file and write basic setup
+std::ofstream jsonFile(currentPath + OS_PATH_DELIMETER + "jocoa.json");
+jsonFile << "{\n\t\"projectName\": \"MyProject\",\n\t\"projectType\": \"Library | Program\",\n\t\"sourceFiles\": \n\t[\n\t\t\"src/file1.java\"\n\t],\n\t\"dependencies\":\n\t[\n\t\t\"lib/dependency1.jar\"\n\t],\n\t\"natives\": \"lib/natives\",\n\t\"classpath\": \"bin\"\n}";
+jsonFile.close();
