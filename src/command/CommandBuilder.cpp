@@ -36,7 +36,7 @@ string CommandBuilder::buildJavaCommand(JsonData jsonData)
     for (const auto &dependency : jsonData.dependencies) { finalCommand += OS_DELIMETER + dependency; }
     
     // Add natives directory to command
-    finalCommand += "-Djava.library.path=" + jsonData.natives + " main/Main";
+    finalCommand += " -Djava.library.path=" + jsonData.natives + " main/Main";
 
     // Return command
     return finalCommand;

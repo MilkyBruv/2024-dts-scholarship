@@ -328,7 +328,7 @@ void Commands::_new(char const *argv[])
 
 
 
-.
+------------------------------------------------------------------------------------------------
 
 
 
@@ -380,3 +380,184 @@ WITH
 std::ofstream jsonFile(currentPath + OS_PATH_DELIMETER + "jocoa.json");
 jsonFile << "{\n\t\"projectName\": \"MyProject\",\n\t\"projectType\": \"Library | Program\",\n\t\"sourceFiles\": \n\t[\n\t\t\"src/file1.java\"\n\t],\n\t\"dependencies\":\n\t[\n\t\t\"lib/dependency1.jar\"\n\t],\n\t\"natives\": \"lib/natives\",\n\t\"classpath\": \"bin\"\n}";
 jsonFile.close();
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+{
+	"projectName": "MyProject",
+	"projectType": "Library | Program",
+	"sourceFiles": 
+	[
+		"src/file1.java"
+	],
+	"dependencies":
+	[
+		"lib/dependency1.jar"
+	],
+	"natives": "lib/natives",
+	"classpath": "bin"
+}
+
+FROM
+
+void Commands::createAndWriteFile(string path, string content)
+{
+    // Create file and write file with supplied contents
+    std::ofstream file(path);
+    file << "{\n\t\"projectName\": \"MyProject\",\n\t\"projectType\": \"Library | Program\",\n\t\"sourceFiles\": \n\t[\n\t\t\"src/file1.java\"\n\t],\n\t\"dependencies\":\n\t[\n\t\t\"lib/dependency1.jar\"\n\t],\n\t\"natives\": \"lib/natives\",\n\t\"classpath\": \"bin\"\n}";
+    file.close();
+}
+
+FIXED
+
+package main;
+
+public class Main {
+
+	public static void main(String[] args) {
+
+		System.out.println("Hello World!");
+
+	}
+
+}
+
+WITH
+
+void Commands::createAndWriteFile(string path, string content)
+{
+    // Create file and write file with supplied contents
+    std::ofstream file(path);
+    file << content;
+    file.close();
+}
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+kai@kais-laptop:~/Code/Jocoa/example$ jocoa new TestProject
+Created '/home/kai/Code/Jocoa/example/TestProject'
+Created '/home/kai/Code/Jocoa/example/TestProject/src'
+Created '/home/kai/Code/Jocoa/example/TestProject/src/main'
+Created '/home/kai/Code/Jocoa/example/TestProject/lib'
+Created '/home/kai/Code/Jocoa/example/TestProject/lib/natives'
+Created '/home/kai/Code/Jocoa/example/TestProject/bin'
+kai@kais-laptop:~/Code/Jocoa/example$ cd TestProject/
+kai@kais-laptop:~/Code/Jocoa/example/TestProject$ ls
+bin  jocoa.json  lib  src
+kai@kais-laptop:~/Code/Jocoa/example/TestProject$ jocoa run
+Segmentation fault (core dumped)
+
+FROM
+
+if (strcmp(argv[2], "jar") == 0)
+{
+    // Build and run commands from JSON data for the .jar file
+    system(CommandBuilder::buildJavaJarCommand(jsonData).c_str());
+    return;
+}
+
+FIXED
+
+kai@kais-laptop:~/Code/Jocoa/example$ jocoa new TestProject
+Created '/home/kai/Code/Jocoa/example/TestProject'
+Created '/home/kai/Code/Jocoa/example/TestProject/src'
+Created '/home/kai/Code/Jocoa/example/TestProject/src/main'
+Created '/home/kai/Code/Jocoa/example/TestProject/lib'
+Created '/home/kai/Code/Jocoa/example/TestProject/lib/natives'
+Created '/home/kai/Code/Jocoa/example/TestProject/bin'
+kai@kais-laptop:~/Code/Jocoa/example$ cd TestProject/
+kai@kais-laptop:~/Code/Jocoa/example/TestProject$ jocoa run
+Compiling...
+Done!
+Error: Could not find or load main class main.Main
+Caused by: java.lang.ClassNotFoundException: main.Main
+
+WITH
+
+if (sizeof(argv) / sizeof(argv[0]) > 2)
+{
+    if (strcmp(argv[2], "jar") == 0)
+    {
+        // Build and run commands from JSON data for the .jar file
+        system(CommandBuilder::buildJavaJarCommand(jsonData).c_str());
+        return;
+    }
+}
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+kai@kais-laptop:~/Code/Jocoa/example$ jocoa new TestProject
+Created '/home/kai/Code/Jocoa/example/TestProject'
+Created '/home/kai/Code/Jocoa/example/TestProject/src'
+Created '/home/kai/Code/Jocoa/example/TestProject/src/main'
+Created '/home/kai/Code/Jocoa/example/TestProject/lib'
+Created '/home/kai/Code/Jocoa/example/TestProject/lib/natives'
+Created '/home/kai/Code/Jocoa/example/TestProject/bin'
+kai@kais-laptop:~/Code/Jocoa/example$ cd TestProject/
+kai@kais-laptop:~/Code/Jocoa/example/TestProject$ jocoa run
+Compiling...
+Done!
+Error: Could not find or load main class main.Main
+Caused by: java.lang.ClassNotFoundException: main.Main
+
+TESTED
+
+kai@kais-laptop:~/Code/Jocoa/example/TestProject$ javac -d bin -cp . src/main/Main.java
+kai@kais-laptop:~/Code/Jocoa/example/TestProject$ java -cp .:bin -Djava.library.path=lib/natives main/Main
+
+RETURNED
+
+Hello World!
+
+TESTED
+
+// Build and run commands from JSON data for the .class files
+cout << "Compiling..." << endl;
+cout << CommandBuilder::buildJavacCommand(jsonData).c_str() << endl;
+system(CommandBuilder::buildJavacCommand(jsonData).c_str());
+cout << "Done!" << endl;
+cout << CommandBuilder::buildJavaCommand(jsonData).c_str() << endl;
+system(CommandBuilder::buildJavaCommand(jsonData).c_str());
+
+RETURNED
+
+kai@kais-laptop:~/Code/Jocoa/example/TestProject$ jocoa run
+Compiling...
+javac -d bin -cp . src/main/Main.java
+Done!
+java -cp .:bin-Djava.library.path=lib/natives main/Main
+Error: Could not find or load main class main.Main
+Caused by: java.lang.ClassNotFoundException: main.Main
+
+FROM
+
+// Add natives directory to command
+finalCommand += "-Djava.library.path=" + jsonData.natives + " main/Main";
+.:bin-Djava.library.path=lib/natives
+
+FIXED
+
+kai@kais-laptop:~/Code/Jocoa/example/TestProject$ jocoa run
+Compiling...
+javac -d bin -cp . src/main/Main.java
+Done!
+java -cp .:bin -Djava.library.path=lib/natives main/Main
+Hello World!
+
+WITH
+
+// Add natives directory to command
+finalCommand += " -Djava.library.path=" + jsonData.natives + " main/Main";
+.:bin -Djava.library.path=lib/natives

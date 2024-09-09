@@ -24,7 +24,7 @@ void Commands::createAndWriteFile(string path, string content)
 {
     // Create file and write file with supplied contents
     std::ofstream file(path);
-    file << "{\n\t\"projectName\": \"MyProject\",\n\t\"projectType\": \"Library | Program\",\n\t\"sourceFiles\": \n\t[\n\t\t\"src/file1.java\"\n\t],\n\t\"dependencies\":\n\t[\n\t\t\"lib/dependency1.jar\"\n\t],\n\t\"natives\": \"lib/natives\",\n\t\"classpath\": \"bin\"\n}";
+    file << content;
     file.close();
 }
 
@@ -33,17 +33,22 @@ void Commands::run(char const *argv[])
     // Get JSON data
     JsonData jsonData = JSONReader::getJsonData();
 
-    if (strcmp(argv[2], "jar") == 0)
+    if (sizeof(argv) / sizeof(argv[0]) > 2)
     {
-        // Build and run commands from JSON data for the .jar file
-        system(CommandBuilder::buildJavaJarCommand(jsonData).c_str());
-        return;
+        if (strcmp(argv[2], "jar") == 0)
+        {
+            // Build and run commands from JSON data for the .jar file
+            system(CommandBuilder::buildJavaJarCommand(jsonData).c_str());
+            return;
+        }
     }
 
     // Build and run commands from JSON data for the .class files
     cout << "Compiling..." << endl;
+    cout << CommandBuilder::buildJavacCommand(jsonData).c_str() << endl;
     system(CommandBuilder::buildJavacCommand(jsonData).c_str());
     cout << "Done!" << endl;
+    cout << CommandBuilder::buildJavaCommand(jsonData).c_str() << endl;
     system(CommandBuilder::buildJavaCommand(jsonData).c_str());
 }
 
@@ -69,7 +74,10 @@ void Commands::_new(char const *argv[])
 
     // Create JSON file and write basic setup
     createAndWriteFile(currentPath + OS_PATH_DELIMETER + "jocoa.json", 
-        "{\n\t\"projectName\": \"MyProject\",\n\t\"projectType\": \"Library | Program\",\n\t\"sourceFiles\": \n\t[\n\t\t\"src/file1.java\"\n\t],\n\t\"dependencies\":\n\t[\n\t\t\"lib/dependency1.jar\"\n\t],\n\t\"natives\": \"lib/natives\",\n\t\"classpath\": \"bin\"\n}");
+        "{\n\t\"projectName\": \"MyProject\",\n\t\"projectType\": \"Program\",\n\t\"sourceFiles\": \n\t[\n\t\t\"src/main/Main.java\"\n\t],\n\t\"dependencies\": [],\n\t\"natives\": \"lib/natives\",\n\t\"classpath\": \"bin\"\n}");
+    // Create main Java file and write a basic program
+    createAndWriteFile(currentPath + OS_PATH_DELIMETER + "src" + OS_PATH_DELIMETER + "main" + OS_PATH_DELIMETER + "Main.java", 
+        "package main;\n\npublic class Main {\n\n\tpublic static void main(String[] args) {\n\n\t\tSystem.out.println(\"Hello World!\");\n\n\t}\n\n}");
 }
 
 void Commands::cleanUp(char const *argv[])
