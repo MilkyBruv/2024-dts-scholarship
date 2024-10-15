@@ -13,14 +13,10 @@ using std::string;
 
 /*
 Commands:
- - run --jar
+ - run jar
  - to-jar
  - new (create new project)
- - clean-up (clean any unused libraries and files)
  - help (shows list of commands)
- - add-library <name> <name> ... (add packages from maven repo)
- - remove-library <name> <name> ... (remove packages from local project)
- - search-library <name> (search packages from maven repo)
 */
 
 /*
@@ -39,11 +35,7 @@ public:
     static void run(char const *argv[]);
     static void toJar(char const *argv[]);
     static void _new(char const *argv[]);
-    static void cleanUp(char const *argv[]);
     static void help(char const *argv[]);
-    static void addLibrary(char const *argv[]);
-    static void removeLibrary(char const *argv[]);
-    static void searchLibrary(char const *argv[]);
 };
 
 

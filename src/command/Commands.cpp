@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <curl/curl.h>
 #include "../json/JSONReader.hpp"
 #include "Commands.hpp"
 #include "CommandBuilder.hpp"
@@ -28,31 +29,10 @@ void Commands::createAndWriteFile(string path, string content)
     file.close();
 }
 
-bool Commands::getVerboseState(char const *argv[])
-{
-    if (sizeof(argv) / sizeof(argv[0]) > 2)
-    {
-        // Check for verbose state in all arguments
-        for (int i = 2; i < sizeof(argv) / sizeof(argv[0]); i++)
-        {
-            if (strcmp(argv[i], "--show-info") == 0)
-            {
-                // Set verbose state
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
 void Commands::run(char const *argv[])
 {
     // Get JSON data
     JsonData jsonData = JSONReader::getJsonData();
-
-    // Verbose argument
-    bool verbose = getVerboseState(argv);
 
     string command;
 
@@ -62,7 +42,6 @@ void Commands::run(char const *argv[])
         {
             // Build and run commands from JSON data for the .jar file
             command = CommandBuilder::buildJavaJarCommand(jsonData);
-            if (verbose) { cout << command << endl; }
             system(command.c_str());
             return;
         }
@@ -71,11 +50,9 @@ void Commands::run(char const *argv[])
     // Build and run commands from JSON data for the .class files
     cout << "Compiling..." << endl;
     command = CommandBuilder::buildJavacCommand(jsonData);
-    if (verbose) { cout << command << endl; }
     system(command.c_str());
 
     command = CommandBuilder::buildJavaCommand(jsonData);
-    if (verbose) { cout << command << endl; }
     system(command.c_str());
     cout << "Done!" << endl;
 }
@@ -85,9 +62,15 @@ void Commands::toJar(char const *argv[])
     // Get JSON data
     JsonData jsonData = JSONReader::getJsonData();
 
+    string command;
+
     // Compile project to .jar file
-    CommandBuilder::buildJavacCommand(jsonData);
-    CommandBuilder::buildJavaJarCommand(jsonData);
+    command = CommandBuilder::buildJavacCommand(jsonData);
+    system(command.c_str());
+    command = CommandBuilder::buildJarCommand(jsonData);
+    system(command.c_str());
+    command = CommandBuilder::buildJavaJarCommand(jsonData);
+    system(command.c_str());
 }
 
 void Commands::_new(char const *argv[])
@@ -113,29 +96,7 @@ void Commands::_new(char const *argv[])
         "package main;\n\npublic class Main {\n\n\tpublic static void main(String[] args) {\n\n\t\tSystem.out.println(\"Hello World!\");\n\n\t}\n\n}");
 }
 
-void Commands::cleanUp(char const *argv[])
-{
-    // 
-}
-
 void Commands::help(char const *argv[])
 {
-    // 
+    cout << "Usage:\n \t help \t\t\t\t Shows this command\n \t new <projectName> \t\t Creates new Jocoa Java project\n \t run \t\t\t\t Runs current Jocoa Java project\n \t to-jar \t\t\t Packages Jocoa Java project into a .jar file" << endl;
 }
-
-void Commands::addLibrary(char const *argv[])
-{
-    // 
-}
-
-void Commands::removeLibrary(char const *argv[])
-{
-    // 
-}
-
-void Commands::searchLibrary(char const *argv[])
-{
-    // 
-}
-
-

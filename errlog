@@ -568,23 +568,20 @@ finalCommand += " -Djava.library.path=" + jsonData.natives + " main/Main";
 
 
 
-kai@kais-laptop:~/Code/Jocoa/example/TestProject$ jocoa run
-Compiling...
-Hello World!
-Done!
-kai@kais-laptop:~/Code/Jocoa/example/TestProject$ jocoa run --show-info
-Compiling...
-Hello World!
-Done!
+kai@kais-laptop:~/Code/Jocoa/Test$ jocoa to-jar
+Error: Unable to access jarfile build/MyProject.jar
 
 FROM
 
-???
+command = CommandBuilder::buildJavacCommand(jsonData);
+system(command.c_str());
+command = CommandBuilder::buildJavaJarCommand(jsonData);
+system(command.c_str());
 
 FIXED
 
-???
+.
 
 WITH
 
-???
+.
