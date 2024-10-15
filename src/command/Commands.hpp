@@ -34,6 +34,7 @@ class Commands
 private:
     static void createDirectory(string path);
     static void createAndWriteFile(string path, string content);
+    static bool getVerboseState(char const *argv[]);
 public:
     static void run(char const *argv[]);
     static void toJar(char const *argv[]);

@@ -561,3 +561,30 @@ WITH
 // Add natives directory to command
 finalCommand += " -Djava.library.path=" + jsonData.natives + " main/Main";
 .:bin -Djava.library.path=lib/natives
+
+
+
+.
+
+
+
+kai@kais-laptop:~/Code/Jocoa/example/TestProject$ jocoa run
+Compiling...
+Hello World!
+Done!
+kai@kais-laptop:~/Code/Jocoa/example/TestProject$ jocoa run --show-info
+Compiling...
+Hello World!
+Done!
+
+FROM
+
+???
+
+FIXED
+
+???
+
+WITH
+
+???

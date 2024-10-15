@@ -28,33 +28,66 @@ void Commands::createAndWriteFile(string path, string content)
     file.close();
 }
 
+bool Commands::getVerboseState(char const *argv[])
+{
+    if (sizeof(argv) / sizeof(argv[0]) > 2)
+    {
+        // Check for verbose state in all arguments
+        for (int i = 2; i < sizeof(argv) / sizeof(argv[0]); i++)
+        {
+            if (strcmp(argv[i], "--show-info") == 0)
+            {
+                // Set verbose state
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 void Commands::run(char const *argv[])
 {
     // Get JSON data
     JsonData jsonData = JSONReader::getJsonData();
+
+    // Verbose argument
+    bool verbose = getVerboseState(argv);
+
+    string command;
 
     if (sizeof(argv) / sizeof(argv[0]) > 2)
     {
         if (strcmp(argv[2], "jar") == 0)
         {
             // Build and run commands from JSON data for the .jar file
-            system(CommandBuilder::buildJavaJarCommand(jsonData).c_str());
+            command = CommandBuilder::buildJavaJarCommand(jsonData);
+            if (verbose) { cout << command << endl; }
+            system(command.c_str());
             return;
         }
     }
 
     // Build and run commands from JSON data for the .class files
     cout << "Compiling..." << endl;
-    cout << CommandBuilder::buildJavacCommand(jsonData).c_str() << endl;
-    system(CommandBuilder::buildJavacCommand(jsonData).c_str());
+    command = CommandBuilder::buildJavacCommand(jsonData);
+    if (verbose) { cout << command << endl; }
+    system(command.c_str());
+
+    command = CommandBuilder::buildJavaCommand(jsonData);
+    if (verbose) { cout << command << endl; }
+    system(command.c_str());
     cout << "Done!" << endl;
-    cout << CommandBuilder::buildJavaCommand(jsonData).c_str() << endl;
-    system(CommandBuilder::buildJavaCommand(jsonData).c_str());
 }
 
 void Commands::toJar(char const *argv[])
 {
-    // 
+    // Get JSON data
+    JsonData jsonData = JSONReader::getJsonData();
+
+    // Compile project to .jar file
+    CommandBuilder::buildJavacCommand(jsonData);
+    CommandBuilder::buildJavaJarCommand(jsonData);
 }
 
 void Commands::_new(char const *argv[])
