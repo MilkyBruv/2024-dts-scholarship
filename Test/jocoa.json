@@ -1,11 +1,13 @@
 {
-	"projectName": "MyProject",
+	"projectName": "Test",
 	"projectType": "Program",
 	"sourceFiles": 
 	[
 		"src/main/Main.java"
 	],
-	"dependencies": [],
+	"dependencies": 
+	[
+	],
 	"natives": "lib/natives",
 	"classpath": "bin"
 }

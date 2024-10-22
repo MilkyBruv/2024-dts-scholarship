@@ -36,6 +36,7 @@ public:
     static void toJar(char const *argv[]);
     static void _new(char const *argv[]);
     static void help(char const *argv[]);
+    static void search(char const *argv[]);
 };
 
 

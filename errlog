@@ -564,7 +564,7 @@ finalCommand += " -Djava.library.path=" + jsonData.natives + " main/Main";
 
 
 
-.
+------------------------------------------------------------------------------------------------
 
 
 
@@ -580,8 +580,132 @@ system(command.c_str());
 
 FIXED
 
+kai@kais-laptop:~/Code/Jocoa/Test$ jocoa to-jar
+Hello World!
+kai@kais-laptop:~/Code/Jocoa/Test$ tree
 .
+├── build
+│   └── Test.jar
 
 WITH
 
+command = CommandBuilder::buildJavacCommand(jsonData);
+system(command.c_str());
+command = CommandBuilder::buildJarCommand(jsonData);
+system(command.c_str());
+command = CommandBuilder::buildJavaJarCommand(jsonData);
+system(command.c_str());
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+kai@kais-laptop:~/Code/Jocoa/Test$ jocoa search
+Failed to parse jocoa.json file. >>[json.exception.parse_error.101] parse error at line 7, column 2: syntax error while parsing value - unexpected ']'; expected '[', '{', or a literal
+Failed to parse {classpath} in jocoa.json file. >>[json.exception.type_error.302] type must be string, but is null
+terminate called after throwing an instance of 'std::logic_error'
+  what():  basic_string: construction from null is not valid
+Aborted (core dumped)
+kai@kais-laptop:~/Code/Jocoa/Test$ cat jocoa.json
+{
+	"projectName": "Test",
+	"projectType": "Program",
+	"sourceFiles": 
+	[
+		"/home/kai/Code/Jocoa/Test/src/main/Main.java",
+	],
+	"dependencies": 
+	[
+	],
+	"natives": "lib/natives",
+	"classpath": "bin"
+}
+
+FROM
+
+for (auto &sourceFile : newSourceFiles)
+{
+    newJsonContent += "\n\t\t\"" + sourceFile + "\",";
+}
+
+FIXED
+
+kai@kais-laptop:~/Code/Jocoa/Test$ jocoa search
+/home/kai/Code/Jocoa/Test/
+"/home/kai/Code/Jocoa/Test/src/main/Main.java"
+Searched source files
+kai@kais-laptop:~/Code/Jocoa/Test$ cat jocoa.json
+{
+	"projectName": "Test",
+	"projectType": "Program",
+	"sourceFiles": 
+	[
+		"home/kai/Code/Jocoa/Test/src/main/Main.java"
+	],
+	"dependencies": 
+	[
+	],
+	"natives": "lib/natives",
+	"classpath": "bin"
+}
+
+WITH
+
+for (int i = 0; i < newSourceFiles.size(); i++)
+{
+    newJsonContent += "\n\t\t\"" + newSourceFiles[i] + "\"";
+    
+    if (i != jsonData.sourceFiles.size() - 1)
+    {
+        newJsonContent += ",";
+    }
+}
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+kai@kais-laptop:~/Code/Jocoa/Test$ jocoa to-jar
+java.nio.file.NoSuchFileException: /tmp/Test.jar18210738276746142874.jar -> build/Test.jar
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:92)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:106)
+	at java.base/sun.nio.fs.UnixCopyFile.move(UnixCopyFile.java:477)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.move(UnixFileSystemProvider.java:266)
+	at java.base/java.nio.file.Files.move(Files.java:1432)
+	at jdk.jartool/sun.tools.jar.Main.validateAndClose(Main.java:469)
+	at jdk.jartool/sun.tools.jar.Main.run(Main.java:333)
+	at jdk.jartool/sun.tools.jar.Main.main(Main.java:1689)
+Error: Unable to access jarfile build/Test.jar
+
+FROM
+
+createDirectory(currentPath);
+createDirectory(currentPath + OS_PATH_DELIMETER + "src");
+createDirectory(currentPath + OS_PATH_DELIMETER + "src" + OS_PATH_DELIMETER + "main");
+createDirectory(currentPath + OS_PATH_DELIMETER + "lib");
+createDirectory(currentPath + OS_PATH_DELIMETER + "lib" + OS_PATH_DELIMETER + "natives");
+createDirectory(currentPath + OS_PATH_DELIMETER + "bin");
+
+FIXED
+
+kai@kais-laptop:~/Code/Jocoa/Test$ jocoa to-jar
+Hello World!
+kai@kais-laptop:~/Code/Jocoa/Test$ tree
 .
+├── build
+│   └── Test.jar
+
+WITH
+
+createDirectory(currentPath);
+createDirectory(currentPath + OS_PATH_DELIMETER + "src");
+createDirectory(currentPath + OS_PATH_DELIMETER + "src" + OS_PATH_DELIMETER + "main");
+createDirectory(currentPath + OS_PATH_DELIMETER + "lib");
+createDirectory(currentPath + OS_PATH_DELIMETER + "lib" + OS_PATH_DELIMETER + "natives");
+createDirectory(currentPath + OS_PATH_DELIMETER + "bin");
+createDirectory(currentPath + OS_PATH_DELIMETER + "build");

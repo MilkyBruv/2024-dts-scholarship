@@ -10,3 +10,7 @@ win:
 linux:
 	g++ src/**/*.cpp -o jocoa
 	sudo mv jocoa /usr/local/bin
+
+clinux:
+	clang++ src/**/*.cpp -o jocoa
+	sudo mv jocoa /usr/local/bin
